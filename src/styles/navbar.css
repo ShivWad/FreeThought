@@ -1,0 +1,23 @@
+/* flex justify-end bg-blue-200  */
+.navbar-container {
+    display: flex;
+    justify-content: end;
+    background-color: var(--Tiffany-Blue);
+    height: 10vh;
+}
+.navbar-content {
+    font-size: x-large;
+    display: flex;
+    gap: 1rem;
+    margin: 1rem;
+    font-weight: bold;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .navbar-container {
+       justify-content: center;
+    }
+}
+
+

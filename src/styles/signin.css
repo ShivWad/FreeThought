@@ -1,0 +1,70 @@
+:root {
+    --Dark-Blue: #2B4560;
+    --Midnight-Blue: #2F6D80;
+    --Tiffany-Blue: #6AA4B0;
+    --Ivory: #E1E7E0;
+}
+
+.signin-container {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.email-input {
+    margin: 5%;
+    border: solid 1px black;
+    padding: 0.5rem;
+    color: black;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: var(--Midnight-Blue);
+    border-radius: 2rem;
+    outline: black 2px solid;
+    transition: transform 300ms ease, border 300ms, outline 300ms ease;
+}
+
+.email-input:hover {
+    background-color: var(--Ivory);
+}
+
+.email-input::placeholder {
+    color: rgba(20, 20, 20, 0.4);
+}
+
+.email-input:focus-visible {
+    transform: scale(2);
+    background-color: var(--Ivory);
+    border: solid 1px black;
+    outline: solid 2px var(--Ivory);
+}
+
+
+.magin-link-button {
+    font-size: large;
+    background-color: transparent;
+    color: var(--Ivory);
+    border: none;
+    transition: all 200ms;
+}
+
+.magin-link-button:hover {
+    color: black;
+    background-color: var(--Ivory);
+    border: solid 0px;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.magin-link-button:active{
+    background-color: var(--Dark-Blue);
+}
+
+@media only screen and (max-width: 600px) {
+    .email-input:focus-visible {
+        transform: none;
+    }
+}

@@ -3,9 +3,9 @@ import React from 'react'
 
 const NavBar = () => {
     return (
-        <div className="flex justify-end bg-blue-200 ">
-            <div className="flex gap-5 m-4 font-bold" >
-                <Link href={"/write"} >
+        <div className="navbar-container">
+            <div className="navbar-content" >
+                <Link href={"/write"}>
                     Write
                 </Link>
                 <Link href={"/signup"} >
@@ -20,3 +20,14 @@ const NavBar = () => {
 }
 
 export default NavBar
+
+
+// export async function getStaticProps() {
+
+
+//     return {
+//         props: {
+//             data: data
+//         }, // will be passed to the page component as props
+//     }
+// }

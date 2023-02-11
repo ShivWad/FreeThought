@@ -1,11 +1,54 @@
-import React from 'react'
+import { Session, User } from '@supabase/supabase-js';
+import React, { useEffect, useState } from 'react'
+import { supabase } from 'supabase'
+
+type infoType = {
+    data: {
+        user: User | null;
+        session: Session | null;
+    } | {
+        user: null;
+        session: null;
+    }
+}
+
+// type testProps = {
+//     data: {
+//         session: Session;
+//     };
+//     error: null;
+// } | {
+//     data: {
+//         session: null;
+//     };
+//     error: AuthError;
+// } | {
+//     data: {
+//         session: null;
+//     };
+//     error: null;
+// }
+
 
 const SignInComponent = () => {
-    return (
-        <div className='flex text-white bg-black h-[calc(100vh-56px)] flex-col justify-center items-center gap-5'>
+    const [email, setEmail] = useState<string>('');
 
-            <input type={"email"} className="text-black b-1 text-xl text-center bg-[#84c4e9f1] w-full md:w-auto font-bold p-4 border-0 rounded-[2rem] focus-visible:outline-cyan-600 focus-visible:outline-4" />
-            <input type={"password"} className="text-black b-1 text-xl text-center bg-[#b8e6fc] w-screen  font-bold p-4 border-0 rounded-[2rem] focus-visible:outline-cyan-600 focus-visible:outline-4" />
+    const handleMagickLink = async (email: string) => {
+        await supabase.auth.signInWithOtp({
+            email: email,
+            options: {
+                emailRedirectTo: 'http://localhost:3000/profile',
+            },
+        })
+    }
+
+    console.log(email);
+    return (
+        <div className='signin-container' >
+            <input type={"email"} className="email-input" placeholder='Enter valid email' onChange={(e) => { setEmail(e.target.value) }} />
+            <button className='magin-link-button' onClick={() => handleMagickLink(email)} >
+                Get Magick Link
+            </button>
         </div>
     )
 }
