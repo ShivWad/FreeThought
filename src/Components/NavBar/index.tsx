@@ -1,7 +1,14 @@
 import Link from 'next/link'
 import React from 'react'
+import { supabase } from 'supabase';
 
 const NavBar = () => {
+
+    const handleSignOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error)
+            console.log(error);
+    }
     return (
         <div className="navbar-container">
             <div className="navbar-content" >
@@ -14,6 +21,9 @@ const NavBar = () => {
                 <Link href={"/signin"}>
                     Sign In
                 </Link>
+                <button onClick={handleSignOut}>
+                    Sign out
+                </button>
             </div>
         </div>
     )

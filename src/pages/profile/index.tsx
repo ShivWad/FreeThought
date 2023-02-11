@@ -1,5 +1,4 @@
 import { AuthError, Session, User } from '@supabase/supabase-js'
-import { data } from 'autoprefixer'
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
 type infoType = {
@@ -12,7 +11,7 @@ type infoType = {
     }
 }
 
-type testProps = {
+type sessionType = {
     data: {
         session: Session;
     };
@@ -30,9 +29,9 @@ type testProps = {
 }
 
 
-const Test = () => {
-
-    const [session, setSession] = useState<testProps>();
+const Profile = () => {
+    // const [authenticatedState, setAuthenticatedState] = useState('not-authenticated');
+    const [session, setSession] = useState<sessionType>();
     useEffect(() => {
         let sess = supabase.auth.getSession();
         sess.then((data) => {
@@ -40,17 +39,36 @@ const Test = () => {
         }).catch((reason) => {
             console.log(reason);
         })
+
+        // const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+        //     handleAuthChange(event, session)
+        //     if (event === 'SIGNED_IN') {
+        //       setAuthenticatedState('authenticated')
+        //       router.push('/profile')
+        //     }
+        //     if (event === 'SIGNED_OUT') {
+        //       setAuthenticatedState('not-authenticated')
+        //     }
+        //   })
+        //   checkUser()
+        //   return () => {
+        //     authListener.unsubscribe()
+        //   }
     }, [])
+
+
 
     return (
         <>
             <div >
                 <h1>
                     {session?.data.session?.user.email}
+
                 </h1>
+                {session?.data.session?.user.id}
             </div>
         </>
     )
 }
 
-export default Test
+export default Profile
