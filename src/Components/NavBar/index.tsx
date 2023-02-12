@@ -1,14 +1,21 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router';
+
 import React from 'react'
 import { supabase } from 'supabase';
 
 const NavBar = () => {
+    const router = useRouter();
+
 
     const handleSignOut = async () => {
         const { error } = await supabase.auth.signOut();
+        router.push("/signin")
         if (error)
             console.log(error);
     }
+
+
     return (
         <div className="navbar-container">
             <div className="navbar-content" >

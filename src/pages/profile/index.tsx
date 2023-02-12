@@ -39,7 +39,6 @@ const Profile = () => {
         }).catch((reason) => {
             console.log(reason);
         })
-
         // const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
         //     handleAuthChange(event, session)
         //     if (event === 'SIGNED_IN') {
@@ -55,9 +54,6 @@ const Profile = () => {
         //     authListener.unsubscribe()
         //   }
     }, [])
-
-
-
     return (
         <>
             <div >
@@ -70,5 +66,6 @@ const Profile = () => {
         </>
     )
 }
+
 
 export default Profile

@@ -44,24 +44,39 @@
     outline: solid 2px var(--Ivory);
 }
 
-.signin-container.err .email-input {
+.email-input.err {
     background-color: rgba(221, 160, 160, 0.904);
-    animation: horizontal-shaking
+    animation-name: horizontal-shaking
 }
 
 @keyframes horizontal-shaking {
-    0% { transform: translateX(0) }
-    25% { transform: translateX(5px) }
-    50% { transform: translateX(-5px) }
-    75% { transform: translateX(5px) }
-    100% { transform: translateX(0) }
-   }
+    0% {
+        transform: translateX(0)
+    }
+
+    25% {
+        transform: translateX(15px)
+    }
+
+    50% {
+        transform: translateX(-15px)
+    }
+
+    75% {
+        transform: translateX(15px)
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
 
 .magin-link-button {
     font-size: large;
     background-color: transparent;
     color: var(--Ivory);
     border: none;
+    padding: 0.5rem;
     transition: all 200ms;
 }
 
@@ -77,8 +92,18 @@
     background-color: var(--Dark-Blue);
 }
 
+
+.validation-message.err {
+    color: rgb(216, 103, 103);
+}
+.validation-message.succ {
+    color: rgb(103, 216, 150);
+}
 @media only screen and (max-width: 600px) {
     .email-input:focus-visible {
         transform: none;
+    }
+    .validation-message{
+        padding: 1rem;
     }
 }
