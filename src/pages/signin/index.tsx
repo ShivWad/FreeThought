@@ -1,40 +1,9 @@
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { AuthError, Session, User } from '@supabase/supabase-js';
+import { GetServerSidePropsContext } from 'next';
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
 
-type infoType = {
-    data: {
-        user: User | null;
-        session: Session | null;
-    } | {
-        user: null;
-        session: null;
-    }
-}
-
-// type testProps = {
-//     data: {
-//         session: Session;
-//     };
-//     error: null;
-// } | {
-//     data: {
-//         session: null;
-//     };
-//     error: AuthError;
-// } | {
-//     data: {
-//         session: null;
-//     };
-//     error: null;
-// }
-
-// const vibarateElem = () => {
-//     const emailEl = document.getElementsByClassName("signin-container");
-//     for (let i = 0; i < 10; i++) {
-//       emailEl[0].style = "left:100px";
-//     }
-// }
 
 type sessionType = {
     data: {
@@ -54,21 +23,21 @@ type sessionType = {
 }
 
 
-const SignInComponent = () => {
+const SignInComponent = (props: null) => {
     const [email, setEmail] = useState<string>('');
     const [err, setErr] = useState<"error" | "success" | "">("");
     const [errMessage, setErrMessage] = useState('');
-    const [session, setSession] = useState<sessionType>();
+    // const [session, setSession] = useState<sessionType>();
 
 
-    useEffect(() => {
-        let sess = supabase.auth.getSession();
-        sess.then((data) => {
-            setSession(data);
-        }).catch((reason) => {
-            console.log(reason);
-        })
-    }, [])
+    // useEffect(() => {
+    //     let sess = supabase.auth.getSession();
+    //     sess.then((data) => {
+    //         setSession(data);
+    //     }).catch((reason) => {
+    //         console.log(reason);
+    //     })
+    // }, [])
     const handleMagickLink = async (email: string): Promise<boolean> => {
 
         if (email.length < 0) {
@@ -115,8 +84,7 @@ const SignInComponent = () => {
     return (
         <div className={"signin-container"} >
 
-            {session?.data.session?.user.email}
-
+            {/* {session?.data.session?.user.email} */}
             <div className={`validation-message ${err == "error" ? "err" : "succ"}`}>
                 <p>
                     {errMessage}
@@ -137,4 +105,32 @@ const SignInComponent = () => {
     )
 }
 
-export default SignInComponent  
+export default SignInComponent
+
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    // Create authenticated Supabase Client
+
+    const supabase = createServerSupabaseClient(ctx)
+
+    // Check if we have a session
+    const {
+        data: { session },
+    } = await supabase.auth.getSession()
+
+
+    console.log(session?.user)
+
+    if (session)
+        return {
+            redirect: {
+                destination: '/profile',
+                permanent: false,
+            },
+        }
+    return {
+        props: {
+            data: null,
+        },
+    }
+}

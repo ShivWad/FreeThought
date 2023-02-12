@@ -1,35 +1,28 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { AuthError, Session } from '@supabase/supabase-js';
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { supabase } from 'supabase';
-type Data = {
-    data: {
-        session: Session;
-    };
-    error: null;
-} | {
-    data: {
-        session: null;
-    };
-    error: AuthError;
-} | {
-    data: {
-        session: null;
-    };
-    error: null;
-}
+// // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+// import { AuthError, Session } from '@supabase/supabase-js';
+// import type { NextApiRequest, NextApiResponse } from 'next'
+// import { supabase } from 'supabase';
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<Data>
-) {
+// type Data = {
+//     data: {
+//         session: Session;
+//     };
+//     error: null;
+// } | {
+//     data: {
+//         session: null;
+//     };
+//     error: AuthError;
+// } | {
+//     data: {
+//         session: null;
+//     };
+//     error: null;
+// }
 
-    console.log('INSIDE API')
-    let session = await supabase.auth.getSession();
-    // let result = session.then((session) => {
-    //     return session
-    // }).catch((err) => {
-    //     return err
-    // })
-    return res.status(200).json(session);
-}
+// export default function handler(req: NextApiRequest, res: NextApiResponse) {
+//     // Set the auth cookie.
+//     supabase.auth.api.setAuthCookie(req, res);
+//    }
+
+export {}
