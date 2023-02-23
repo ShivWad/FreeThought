@@ -24,9 +24,11 @@ type sessionType = {
 }
 
 
-const SignInPage = () => {
+const SignUpPage = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>("");
+    const [comfPassword, setComfPassword] = useState<string>("")
+
     const [err, setErr] = useState<"emailError" | "passError" | "error" | "success" | "">("");
     const [errMessage, setErrMessage] = useState('');
     const user = useUser();
@@ -40,7 +42,7 @@ const SignInPage = () => {
             console.log(">>>", user)
     }, [user]);
 
-    const handleMagickLink = async (email: string): Promise<boolean> => {
+    const handleSignUp = async (email: string): Promise<boolean> => {
 
         if (email.length < 0) {
             setErr("error");
@@ -56,14 +58,13 @@ const SignInPage = () => {
         if (params.get("redirectedUrl"))
             redirectUrl = params.get("redirectedUrl");
 
-
-        let authResponse = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
+        let authResponse = await supabase.auth.signUp({
+            password: password,
+            email: email
         })
 
         if (authResponse.error) {
-            setErr("error");
+            setErr("emailError");
             setErrMessage("Please enter an E-mail address before proceeding!");
             return false;
         }
@@ -75,8 +76,17 @@ const SignInPage = () => {
         }
     }
 
-    const handleClick = async (email: string) => {
-        await handleMagickLink(email);
+    const handleClick = async () => {
+
+        if (password === comfPassword)
+            await handleSignUp(email);
+        else {
+            setErr("passError")
+            setErrMessage("Password doesn't match");
+            return false;
+        }
+
+
     }
     console.log(email);
     return (
@@ -87,27 +97,31 @@ const SignInPage = () => {
                 </p>
             </div>
 
-            <input type={"email"} value={email} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter valid email' onChange={(e) => {
+            <input type={"email"} value={email} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a valid email' autoComplete="new-password" onChange={(e) => {
                 setErrMessage("");
                 setErr("");
                 setEmail(e.target.value)
             }} required />
 
-            <input type={"password"} value={password} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' onChange={(e) => {
+            <input type={"password"} value={password} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' autoComplete="new-password" onChange={(e) => {
                 setPassword(e.target.value)
             }} required />
-            
-            <button className='magin-link-button' onClick={(e) => {
-                handleClick(email);
+
+            <input type={"password"} value={comfPassword} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Confirm password' autoComplete="new-password" onChange={(e) => {
+                setComfPassword(e.target.value)
+            }} required />
+
+            <button className='magin-link-button' onClick={() => {
+                handleClick();
             }} type="submit">
-                Sign In
+                Sign up
             </button>
 
         </div>
     )
 }
 
-export default SignInPage
+export default SignUpPage
 
 
 // export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

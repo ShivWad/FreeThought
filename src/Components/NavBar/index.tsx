@@ -7,7 +7,7 @@ import { supabase } from 'supabase';
 const NavBar = () => {
     const router = useRouter();
 
-
+ 
     const handleSignOut = async () => {
         const { error } = await supabase.auth.signOut();
         router.push("/signin")

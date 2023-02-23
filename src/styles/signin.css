@@ -13,8 +13,8 @@
     align-items: center;
 }
 
-.email-input {
-    margin: 5%;
+.cred-input {
+    margin: 1%;
     border: solid 1px black;
     padding: 1rem;
     color: black;
@@ -28,23 +28,23 @@
     position: relative;
 }
 
-.email-input:hover {
+.cred-input:hover {
     background-color: var(--Ivory);
 }
 
-.email-input::placeholder {
+.cred-input::placeholder {
     color: rgba(20, 20, 20, 0.4);
     font-weight: bolder;
 }
 
-.email-input:focus-visible {
+.cred-input:focus-visible {
     transform: scale(1.2);
     background-color: var(--Ivory);
     border: solid 1px black;
     outline: solid 2px var(--Ivory);
 }
 
-.email-input.err {
+.cred-input.err {
     background-color: rgba(221, 160, 160, 0.904);
     animation-name: horizontal-shaking
 }

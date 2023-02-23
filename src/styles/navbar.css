@@ -3,8 +3,8 @@
     display: flex;
     justify-content: end;
     background-color: var(--Tiffany-Blue);
-    height: 10vh;
 }
+
 .navbar-content {
     font-size: x-large;
     display: flex;
@@ -16,8 +16,6 @@
 
 @media only screen and (max-width: 600px) {
     .navbar-container {
-       justify-content: center;
+        justify-content: space-around;
     }
-}
-
-
+}                                                           

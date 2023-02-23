@@ -1,9 +1,10 @@
-import { AuthError, Session, User } from '@supabase/supabase-js'
+import { AuthError, Session, User, UserResponse } from '@supabase/supabase-js'
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { AppContext } from 'next/app'
 import { GetServerSidePropsContext } from 'next'
+import { useUser } from '@supabase/auth-helpers-react'
 
 type infoType = {
     data: {
@@ -34,15 +35,17 @@ type sessionType = {
 
 
 type profilePropType = {
-    initialSession: Session;
-    user: User;
+    fetchedUser: {
+        user: User;
+    } | {
+        user: null;
+    }
 }
 
 const Profile = (props: profilePropType) => {
 
-    console.log(">>>>>>", props)
-
-    let { initialSession, user } = props;
+    let user  = useUser();
+    console.log(">>>>>>", user)
     // const [authenticatedState, setAuthenticatedState] = useState('not-authenticated');
     // const [session, setSession] = useState<sessionType>();
     // useEffect(() => {
@@ -71,10 +74,9 @@ const Profile = (props: profilePropType) => {
         <>
             <div >
                 <h1>
-                    {initialSession.user.email}
+                    {user?.email }
 
                 </h1>
-                {initialSession.user.id}
             </div>
         </>
     )
@@ -88,27 +90,26 @@ export default Profile
 
 
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-    // Create authenticated Supabase Client
-    const supabase = createServerSupabaseClient(ctx)
-    // Check if we have a session
-    const {
-        data: { session },
-    } = await supabase.auth.getSession()
+// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//     // Create authenticated Supabase Client
+//     const refreshToken = ctx.req.cookies['my-refresh-token']
+//     const accessToken = ctx.req.cookies['my-access-token']
 
-    console.log(session?.user)
+//     if (refreshToken && accessToken) {
+//         await supabase.auth.setSession({
+//             refresh_token: refreshToken,
+//             access_token: accessToken,
+//         })
+//     }
 
-    if (!session)
-        return {
-            redirect: {
-                destination: '/signin',
-                permanent: false,
-            },
-        }
-    return {
-        props: {
-            initialSession: session,
-            user: session.user,
-        },
-    }
-}
+//     // returns user information
+//     let user = await supabase.auth.getUser()
+
+//     console.log("????", user)
+//     return {
+//         props: {
+
+//             user: user.data,
+//         },
+//     }
+// }
