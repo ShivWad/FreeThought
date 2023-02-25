@@ -7,7 +7,7 @@ import { supabase } from 'supabase';
 const NavBar = () => {
     const router = useRouter();
 
- 
+
     const handleSignOut = async () => {
         const { error } = await supabase.auth.signOut();
         router.push("/signin")
@@ -19,8 +19,14 @@ const NavBar = () => {
     return (
         <div className="navbar-container">
             <div className="navbar-content" >
+                <Link href={"/thoughts"}>
+                    Thoughts
+                </Link>
                 <Link href={"/write"}>
                     Write
+                </Link>
+                <Link href={"/profile"}>
+                    Profile
                 </Link>
                 <Link href={"/signup"} >
                     Sign up

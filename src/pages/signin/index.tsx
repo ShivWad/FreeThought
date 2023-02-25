@@ -1,6 +1,7 @@
 import { createBrowserSupabaseClient, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { AuthError, Session, User } from '@supabase/supabase-js';
+import { AuthError, createClient, Session, User } from '@supabase/supabase-js';
+import { GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
@@ -29,32 +30,54 @@ const SignInPage = () => {
     const [password, setPassword] = useState<string>("");
     const [err, setErr] = useState<"emailError" | "passError" | "error" | "success" | "">("");
     const [errMessage, setErrMessage] = useState('');
-    const user = useUser();
-    // const [session, setSession] = useState<sessionType>();
+    let redBack: string | null = null;
+    //const user = useUser();
+    const [session, setSession] = useState<sessionType>();
     const router = useRouter();
 
     useEffect(() => {
-        if (user)
-            router.push("/profile");
-        else
-            console.log(">>>", user)
-    }, [user]);
+        let queryString = location.search;
+        let params = new URLSearchParams(queryString);
 
-    const handleMagickLink = async (email: string): Promise<boolean> => {
+        let redirectMessage: string | null = "";
 
+        if (params.get("redMess"))
+            redirectMessage = params.get("redMess");
+
+        if (redirectMessage) {
+            setErr("error");
+            if (redirectMessage)
+                if (redirectMessage == "no-log-in")
+                    setErrMessage("Please log in first!");
+            if (params.get("redBack"))
+                redBack = params.get("redBack");
+
+        }
+        let sess = supabase.auth.getSession();
+        sess.then((data) => {
+            setSession(data);
+            if (session?.data)
+                router.push("/profile");
+        }).catch((reason) => {
+            console.log(reason)
+        })
+        // if (user)
+        //     router.push("/profile");
+        // else
+        //     console.log(">>>", user)
+
+ 
+
+    }, []);
+
+    const handleSignIn = async (email: string): Promise<boolean> => {
+        console.log("LET GOOOOOOOO>>>", email);
         if (email.length < 0) {
             setErr("error");
             setErrMessage("Please enter an E-mail adderess before proceeding");
             return false;
         }
         // emailValidation(email);
-        let queryString = location.search;
-        let params = new URLSearchParams(queryString);
-
-        let redirectUrl: string | null = "";
-
-        if (params.get("redirectedUrl"))
-            redirectUrl = params.get("redirectedUrl");
 
 
         let authResponse = await supabase.auth.signInWithPassword({
@@ -62,21 +85,23 @@ const SignInPage = () => {
             password: password
         })
 
+        console.log(">>>", authResponse)
         if (authResponse.error) {
             setErr("error");
-            setErrMessage("Please enter an E-mail address before proceeding!");
+            setErrMessage(authResponse.error.message);
             return false;
         }
         else {
             setErr("success");
-            setErrMessage("Magick link sent succefully! If the given address is valid, you should see an E-mail.\n\nPlease check your email.");
-            setEmail("")
+            setErrMessage("Logged in succesfully");
+            setEmail("");
+            router.push(redBack ? new URL(redBack) : "/profile");
             return true;
         }
     }
 
     const handleClick = async (email: string) => {
-        await handleMagickLink(email);
+        await handleSignIn(email);
     }
     console.log(email);
     return (
@@ -88,15 +113,13 @@ const SignInPage = () => {
             </div>
 
             <input type={"email"} value={email} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter valid email' onChange={(e) => {
-                setErrMessage("");
-                setErr("");
                 setEmail(e.target.value)
             }} required />
 
             <input type={"password"} value={password} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' onChange={(e) => {
                 setPassword(e.target.value)
             }} required />
-            
+
             <button className='magin-link-button' onClick={(e) => {
                 handleClick(email);
             }} type="submit">
@@ -110,40 +133,19 @@ const SignInPage = () => {
 export default SignInPage
 
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+export const getStaticProps = async () => {
 
-//     const refreshToken = ctx.req.cookies['my-refresh-token']
-//     const accessToken = ctx.req.cookies['my-access-token']
+    const supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+    )
 
-//     if (refreshToken && accessToken) {
-//         await supabase.auth.setSession({
-//             refresh_token: refreshToken,
-//             access_token: accessToken,
-//         })
-//     }
+    const data = await supabaseAdmin.auth.getSession();
 
-//     // returns user information
-//     let user = await supabase.auth.setSession({ accessToken, refreshToken })
-
-//     console.log("????", user.data)
-
-//     // console.log(ctx.req.cookies["sb-access-token"]);
-//     // Check if we have a session
-//     // const { data: { session }, } = await supabase.auth.getSession();
-
-
-//     // console.log(">>", session)
-
-//     // if (session)
-//     //     return {
-//     //         redirect: {
-//     //             destination: '/profile',
-//     //             permanent: false,
-//     //         },
-//     //     }
-//     return {
-//         props: {
-//             data: null,
-//         },
-//     }
-// }
+    console.log("data>>>>>>>>>", data)
+    return {
+        props: {
+            images: data,
+        },
+    }
+}

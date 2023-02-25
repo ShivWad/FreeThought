@@ -1,6 +1,6 @@
 import { createBrowserSupabaseClient, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { AuthError, Session, User } from '@supabase/supabase-js';
+import { AuthError, createClient, Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
@@ -42,7 +42,7 @@ const SignUpPage = () => {
             console.log(">>>", user)
     }, [user]);
 
-    const handleSignUp = async (email: string): Promise<boolean> => {
+    const handleSignUp = async (email: string) => {
 
         if (email.length < 0) {
             setErr("error");
@@ -53,10 +53,10 @@ const SignUpPage = () => {
         let queryString = location.search;
         let params = new URLSearchParams(queryString);
 
-        let redirectUrl: string | null = "";
+        // let redirectUrl: string | null = "";
 
-        if (params.get("redirectedUrl"))
-            redirectUrl = params.get("redirectedUrl");
+        // if (params.get("redirectedUrl"))
+        //     redirectUrl = params.get("redirectedUrl");
 
         let authResponse = await supabase.auth.signUp({
             password: password,
@@ -65,12 +65,12 @@ const SignUpPage = () => {
 
         if (authResponse.error) {
             setErr("emailError");
-            setErrMessage("Please enter an E-mail address before proceeding!");
+            setErrMessage(authResponse.error.message);
             return false;
         }
         else {
             setErr("success");
-            setErrMessage("Magick link sent succefully! If the given address is valid, you should see an E-mail.\n\nPlease check your email.");
+            setErrMessage("If the given address is a valid E-mail, you should see an E-mail.\n\nPlease confirm your email.");
             setEmail("")
             return true;
         }
@@ -79,7 +79,13 @@ const SignUpPage = () => {
     const handleClick = async () => {
 
         if (password === comfPassword)
-            await handleSignUp(email);
+            if (password.length < 6) {
+                setErr("passError");
+                setErrMessage("Password should be atleast 6 characters!");
+                return;
+            }
+            else
+                await handleSignUp(email);
         else {
             setErr("passError")
             setErrMessage("Password doesn't match");
@@ -88,7 +94,6 @@ const SignUpPage = () => {
 
 
     }
-    console.log(email);
     return (
         <div className={"signin-container"} >
             <div className={`validation-message ${err != "success" ? "err" : "succ"}`}>
@@ -123,41 +128,19 @@ const SignUpPage = () => {
 
 export default SignUpPage
 
+export const getStaticProps = async () => {
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    const supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+    )
 
-//     const refreshToken = ctx.req.cookies['my-refresh-token']
-//     const accessToken = ctx.req.cookies['my-access-token']
+    const data = await supabaseAdmin.auth.getSession();
 
-//     if (refreshToken && accessToken) {
-//         await supabase.auth.setSession({
-//             refresh_token: refreshToken,
-//             access_token: accessToken,
-//         })
-//     }
-
-//     // returns user information
-//     let user = await supabase.auth.setSession({ accessToken, refreshToken })
-
-//     console.log("????", user.data)
-
-//     // console.log(ctx.req.cookies["sb-access-token"]);
-//     // Check if we have a session
-//     // const { data: { session }, } = await supabase.auth.getSession();
-
-
-//     // console.log(">>", session)
-
-//     // if (session)
-//     //     return {
-//     //         redirect: {
-//     //             destination: '/profile',
-//     //             permanent: false,
-//     //         },
-//     //     }
-//     return {
-//         props: {
-//             data: null,
-//         },
-//     }
-// }
+    console.log("data>>>>>>>>>", data.data.session)
+    return {
+        props: {
+            images: data,
+        },
+    }
+}
