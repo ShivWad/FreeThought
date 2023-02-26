@@ -31,6 +31,9 @@ const SignUpPage = () => {
 
     const [err, setErr] = useState<"emailError" | "passError" | "error" | "success" | "">("");
     const [errMessage, setErrMessage] = useState('');
+
+    const [userName, setUserName] = useState<string>("");
+    let signUpResult = false;
     const user = useUser();
     // const [session, setSession] = useState<sessionType>();
     const router = useRouter();
@@ -84,8 +87,13 @@ const SignUpPage = () => {
                 setErrMessage("Password should be atleast 6 characters!");
                 return;
             }
-            else
-                await handleSignUp(email);
+            else {
+                let signUpResult = await handleSignUp(email);
+                if (signUpResult) {
+
+                }
+            }
+
         else {
             setErr("passError")
             setErrMessage("Password doesn't match");
@@ -116,10 +124,22 @@ const SignUpPage = () => {
                 setComfPassword(e.target.value)
             }} required />
 
-            <button className='magin-link-button' onClick={() => {
+            <button className='sign-in-button' onClick={() => {
                 handleClick();
             }} type="submit">
                 Sign up
+            </button>
+
+            <input type={"text"} value={userName} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a user name' autoComplete="new-password" onChange={(e) => {
+                setErrMessage("");
+                setErr("");
+                setUserName(e.target.value)
+            }} required />
+            
+            <button className='sign-in-button' onClick={() => {
+                handleClick();
+            }} type="submit">
+                Set User Name
             </button>
 
         </div>

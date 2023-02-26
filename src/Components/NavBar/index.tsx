@@ -1,11 +1,13 @@
+import { useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase';
 
 const NavBar = () => {
     const router = useRouter();
+    const user = useUser();
 
 
     const handleSignOut = async () => {
@@ -19,6 +21,8 @@ const NavBar = () => {
     return (
         <div className="navbar-container">
             <div className="navbar-content" >
+
+
                 <Link href={"/thoughts"}>
                     Thoughts
                 </Link>
@@ -28,15 +32,20 @@ const NavBar = () => {
                 <Link href={"/profile"}>
                     Profile
                 </Link>
-                <Link href={"/signup"} >
-                    Sign up
-                </Link>
-                <Link href={"/signin"}>
-                    Sign In
-                </Link>
-                <button onClick={handleSignOut}>
-                    Sign out
-                </button>
+                {!user && <>
+                    <Link href={"/signup"} >
+                        Sign up
+                    </Link>
+                    <Link href={"/signin"}>
+                        Sign In
+                    </Link>
+                </>}
+
+                {user &&
+                    <button className='sign-in-button' style={{ color: "black", fontWeight: "bold" }} onClick={handleSignOut}>
+                        Sign out
+                    </button>
+                }
             </div>
         </div>
     )

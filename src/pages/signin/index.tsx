@@ -5,7 +5,7 @@ import { GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { supabase } from 'supabase'
-
+// import loadingGif from '../../../public/images/loading-gif.gif'
 
 type sessionType = {
     data: {
@@ -30,12 +30,16 @@ const SignInPage = () => {
     const [password, setPassword] = useState<string>("");
     const [err, setErr] = useState<"emailError" | "passError" | "error" | "success" | "">("");
     const [errMessage, setErrMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     let redBack: string | null = null;
-    //const user = useUser();
+    const user = useUser();
     const [session, setSession] = useState<sessionType>();
     const router = useRouter();
 
     useEffect(() => {
+        if (user)
+            router.push("/profile");
+
         let queryString = location.search;
         let params = new URLSearchParams(queryString);
 
@@ -61,12 +65,9 @@ const SignInPage = () => {
         }).catch((reason) => {
             console.log(reason)
         })
-        // if (user)
-        //     router.push("/profile");
-        // else
-        //     console.log(">>>", user)
 
- 
+
+
 
     }, []);
 
@@ -101,12 +102,16 @@ const SignInPage = () => {
     }
 
     const handleClick = async (email: string) => {
+        setLoading(true);
         await handleSignIn(email);
+        setLoading(false);
+
     }
     console.log(email);
     return (
         <div className={"signin-container"} >
             <div className={`validation-message ${err != "success" ? "err" : "succ"}`}>
+
                 <p>
                     {errMessage}
                 </p>
@@ -120,9 +125,9 @@ const SignInPage = () => {
                 setPassword(e.target.value)
             }} required />
 
-            <button className='magin-link-button' onClick={(e) => {
+            <button className='sign-in-button' onClick={(e) => {
                 handleClick(email);
-            }} type="submit">
+            }} type="submit" style={{ pointerEvents: loading ? "none" : "all" }}>
                 Sign In
             </button>
 
@@ -133,19 +138,3 @@ const SignInPage = () => {
 export default SignInPage
 
 
-export const getStaticProps = async () => {
-
-    const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    )
-
-    const data = await supabaseAdmin.auth.getSession();
-
-    console.log("data>>>>>>>>>", data)
-    return {
-        props: {
-            images: data,
-        },
-    }
-}

@@ -71,7 +71,7 @@
     }
 }
 
-.magin-link-button {
+.sign-in-button {
     font-size: large;
     background-color: transparent;
     color: var(--Ivory);
@@ -80,7 +80,7 @@
     transition: all 200ms;
 }
 
-.magin-link-button:hover {
+.sign-in-button:hover {
     color: black;
     background-color: var(--Ivory);
     border: solid 0px;
@@ -88,7 +88,7 @@
     cursor: pointer;
 }
 
-.magin-link-button:active {
+.sign-in-button:active {
     background-color: var(--Dark-Blue);
 }
 
@@ -96,14 +96,17 @@
 .validation-message.err {
     color: rgb(216, 103, 103);
 }
+
 .validation-message.succ {
     color: rgb(103, 216, 150);
 }
+
 @media only screen and (max-width: 600px) {
     .email-input:focus-visible {
         transform: none;
     }
-    .validation-message{
+
+    .validation-message {
         padding: 1rem;
     }
 }
