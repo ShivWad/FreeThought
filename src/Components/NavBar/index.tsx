@@ -3,12 +3,20 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 
 import React, { useEffect, useState } from 'react'
-import { SignOut } from 'supabase';
+import { SignOut, SetGetUserName } from 'supabase';
 
 const NavBar = () => {
     const router = useRouter();
     const user = useUser();
-
+    const [userName, setUserName] = useState("");
+    useEffect(() => {
+        let res = SetGetUserName(user?.id);
+        res.then((r) => {
+            setUserName(r[0].user_name)
+        }).catch((r) => {
+            console.log(r.message)
+        })
+    }, [])
 
     const handleSignOut = async () => {
         await SignOut();
@@ -18,6 +26,7 @@ const NavBar = () => {
 
     return (
         <div className="navbar-container">
+            <h2>{userName}</h2>
             <div className="navbar-content" >
 
 

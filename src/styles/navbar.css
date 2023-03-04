@@ -4,7 +4,9 @@
     justify-content: end;
     background-color: var(--Tiffany-Blue);
 }
-
+.navbar-container :first-child {
+  margin-right: auto;
+}
 .navbar-content {
     font-size: x-large;
     display: flex;
