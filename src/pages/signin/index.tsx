@@ -4,7 +4,7 @@ import { AuthError, createClient, Session, User } from '@supabase/supabase-js';
 import { GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import { supabase } from 'supabase'
+import {supabase} from 'supabase'
 // import loadingGif from '../../../public/images/loading-gif.gif'
 
 type sessionType = {
@@ -37,9 +37,10 @@ const SignInPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (user)
+        if (user) {
             router.push("/profile");
-
+            return
+        }
         let queryString = location.search;
         let params = new URLSearchParams(queryString);
 
@@ -117,15 +118,15 @@ const SignInPage = () => {
                 </p>
             </div>
 
-            <input type={"email"} value={email} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter valid email' onChange={(e) => {
+            <input type={"email"} value={email} className={`global-text-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter valid email' onChange={(e) => {
                 setEmail(e.target.value)
             }} required />
 
-            <input type={"password"} value={password} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' onChange={(e) => {
+            <input type={"password"} value={password} className={`global-text-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' onChange={(e) => {
                 setPassword(e.target.value)
             }} required />
 
-            <button className='sign-in-button' onClick={(e) => {
+            <button className='global-button' onClick={(e) => {
                 handleClick(email);
             }} type="submit" style={{ pointerEvents: loading ? "none" : "all" }}>
                 Sign In

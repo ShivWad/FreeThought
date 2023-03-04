@@ -13,84 +13,8 @@
     align-items: center;
 }
 
-.cred-input {
-    margin: 1%;
-    border: solid 1px black;
-    padding: 1rem;
-    color: black;
-    text-align: center;
-    font-size: x-large;
-    font-weight: lighter;
-    background-color: var(--Midnight-Blue);
-    border-radius: 2rem;
-    outline: black 2px solid;
-    transition: transform 300ms ease, border 300ms, outline 300ms ease;
-    position: relative;
-}
 
-.cred-input:hover {
-    background-color: var(--Ivory);
-}
 
-.cred-input::placeholder {
-    color: rgba(20, 20, 20, 0.4);
-    font-weight: bolder;
-}
-
-.cred-input:focus-visible {
-    transform: scale(1.2);
-    background-color: var(--Ivory);
-    border: solid 1px black;
-    outline: solid 2px var(--Ivory);
-}
-
-.cred-input.err {
-    background-color: rgba(221, 160, 160, 0.904);
-    animation-name: horizontal-shaking
-}
-
-@keyframes horizontal-shaking {
-    0% {
-        transform: translateX(0)
-    }
-
-    25% {
-        transform: translateX(15px)
-    }
-
-    50% {
-        transform: translateX(-15px)
-    }
-
-    75% {
-        transform: translateX(15px)
-    }
-
-    100% {
-        transform: translateX(0)
-    }
-}
-
-.sign-in-button {
-    font-size: large;
-    background-color: transparent;
-    color: var(--Ivory);
-    border: none;
-    padding: 0.5rem;
-    transition: all 200ms;
-}
-
-.sign-in-button:hover {
-    color: black;
-    background-color: var(--Ivory);
-    border: solid 0px;
-    border-radius: 1rem;
-    cursor: pointer;
-}
-
-.sign-in-button:active {
-    background-color: var(--Dark-Blue);
-}
 
 
 .validation-message.err {

@@ -1,7 +1,7 @@
 import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { supabase } from 'supabase';
+import {supabase} from 'supabase';
 
 const WriteThought = () => {
     const user = useUser();

@@ -2,9 +2,8 @@ import { createBrowserSupabaseClient, createServerSupabaseClient } from '@supaba
 import { useUser } from '@supabase/auth-helpers-react';
 import { AuthError, createClient, Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
-import { supabase } from 'supabase'
-
+import React, { Suspense, useEffect, useState } from 'react'
+import {supabase} from 'supabase'
 
 type sessionType = {
     data: {
@@ -33,7 +32,7 @@ const SignUpPage = () => {
     const [errMessage, setErrMessage] = useState('');
 
     const [userName, setUserName] = useState<string>("");
-    let signUpResult = false;
+
     const user = useUser();
     // const [session, setSession] = useState<sessionType>();
     const router = useRouter();
@@ -64,7 +63,15 @@ const SignUpPage = () => {
         let authResponse = await supabase.auth.signUp({
             password: password,
             email: email
-        })
+        });
+
+
+        if (authResponse.data.user?.identities?.length === 0) {
+            setErr("error");
+            setErrMessage("This E-mail is already in use!");
+            return false;
+        }
+
 
         if (authResponse.error) {
             setErr("emailError");
@@ -77,6 +84,7 @@ const SignUpPage = () => {
             setEmail("")
             return true;
         }
+
     }
 
     const handleClick = async () => {
@@ -90,7 +98,8 @@ const SignUpPage = () => {
             else {
                 let signUpResult = await handleSignUp(email);
                 if (signUpResult) {
-
+                    // setErr("")
+                    // setErrMessage("We are facing some problem");
                 }
             }
 
@@ -110,57 +119,58 @@ const SignUpPage = () => {
                 </p>
             </div>
 
-            <input type={"email"} value={email} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a valid email' autoComplete="new-password" onChange={(e) => {
+            <input type={"email"} value={email} className={`global-text-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a valid email' autoComplete="new-password" onChange={(e) => {
                 setErrMessage("");
                 setErr("");
                 setEmail(e.target.value)
             }} required />
 
-            <input type={"password"} value={password} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' autoComplete="new-password" onChange={(e) => {
+            <input type={"password"} value={password} className={`global-text-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Enter password' autoComplete="new-password" onChange={(e) => {
                 setPassword(e.target.value)
             }} required />
 
-            <input type={"password"} value={comfPassword} className={`cred-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Confirm password' autoComplete="new-password" onChange={(e) => {
+            <input type={"password"} value={comfPassword} className={`global-text-input  ${err == "passError" ? "err" : "succ"}`} placeholder='Confirm password' autoComplete="new-password" onChange={(e) => {
                 setComfPassword(e.target.value)
             }} required />
 
-            <button className='sign-in-button' onClick={() => {
+            <button className='global-button' onClick={() => {
                 handleClick();
             }} type="submit">
                 Sign up
             </button>
 
-            <input type={"text"} value={userName} className={`cred-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a user name' autoComplete="new-password" onChange={(e) => {
+            {/* <input type={"text"} value={userName} className={`global-text-input  ${err == "emailError" ? "err" : "succ"}`} placeholder='Enter a user name' autoComplete="new-password" onChange={(e) => {
                 setErrMessage("");
                 setErr("");
                 setUserName(e.target.value)
             }} required />
             
-            <button className='sign-in-button' onClick={() => {
+            <button className='global-button' onClick={() => {
                 handleClick();
             }} type="submit">
                 Set User Name
-            </button>
+            </button> */}
 
         </div>
     )
 }
 
+
 export default SignUpPage
 
-export const getStaticProps = async () => {
+// export const getStaticProps = async () => {
 
-    const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    )
+//     const supabaseAdmin = createClient(
+//         process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+//         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+//     )
 
-    const data = await supabaseAdmin.auth.getSession();
+//     const data = await supabaseAdmin.auth.getSession();
 
-    console.log("data>>>>>>>>>", data.data.session)
-    return {
-        props: {
-            images: data,
-        },
-    }
-}
+//     console.log("data>>>>>>>>>", data.data.session)
+//     return {
+//         props: {
+//             images: data,
+//         },
+//     }
+// }

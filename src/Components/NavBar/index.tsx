@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 
 import React, { useEffect, useState } from 'react'
-import { supabase } from 'supabase';
+import { SignOut } from 'supabase';
 
 const NavBar = () => {
     const router = useRouter();
@@ -11,10 +11,8 @@ const NavBar = () => {
 
 
     const handleSignOut = async () => {
-        const { error } = await supabase.auth.signOut();
-        router.push("/signin")
-        if (error)
-            console.log(error);
+        await SignOut();
+        router.push('/signin');
     }
 
 
@@ -42,7 +40,7 @@ const NavBar = () => {
                 </>}
 
                 {user &&
-                    <button className='sign-in-button' style={{ color: "black", fontWeight: "bold" }} onClick={handleSignOut}>
+                    <button className='global-button' style={{ color: "black", fontWeight: "bold" }} onClick={handleSignOut}>
                         Sign out
                     </button>
                 }

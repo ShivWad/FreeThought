@@ -9,14 +9,14 @@ type thoughtType = {
     blog_id: number
 }
 
-const ThoughtsList = (props: PostgrestResponse<any>) => {
+const ThoughtsList = ({ data }: PostgrestResponse<any>) => {
 
-    const { data, error } = props;
+
     console.table(data);
 
     return (
         <div>
-            {data?.data?.map((thought: thoughtType) => {
+            {data?.map((thought: thoughtType) => {
                 return (
                     <div key={thought.blog_id}>
                         <h3>
