@@ -86,14 +86,14 @@ const Profile = () => {
 
 export default Profile
 
-export const getServerSideProps = async () => {
+// export const getServerSideProps = async () => {
     
-//    const data = await supabase.from('BlogData').select('*').eq("created_by", data)
-        return {
-            props: {
-                data: "",
-            },
-        }
-    }
+// //    const data = await supabase.from('BlogData').select('*').eq("created_by", data)
+//         return {
+//             props: {
+//                 data: "",
+//             },
+//         }
+//     }
 
 

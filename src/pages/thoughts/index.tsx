@@ -1,3 +1,4 @@
+import Thought from '@/Components/Thought'
 import { PostgrestResponse } from '@supabase/supabase-js'
 import React from 'react'
 import { supabase } from 'supabase'
@@ -9,23 +10,12 @@ type thoughtType = {
     blog_id: number
 }
 
-const ThoughtsList = ({ data }: PostgrestResponse<any>) => {
-
-
-    console.table(data);
-
+const ThoughtsList = ({ data : data}: PostgrestResponse<any>) => {
     return (
-        <div>
-            {data?.map((thought: thoughtType) => {
+        <div className='all-thoughts-container'>
+            {data?.data?.map((thought: thoughtType) => {
                 return (
-                    <div key={thought.blog_id}>
-                        <h3>
-                            {thought.title}
-                        </h3>
-                        <p>
-                            {thought.content}
-                        </p>
-                    </div>
+                    <Thought thought={thought} key={thought.blog_id} />
                 )
             })}
         </div>
@@ -33,9 +23,6 @@ const ThoughtsList = ({ data }: PostgrestResponse<any>) => {
 }
 
 export default ThoughtsList
-
-
-
 
 export const getServerSideProps = async () => {
 

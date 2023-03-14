@@ -17,6 +17,7 @@ body {
 button {
   font-family: 'Space Mono', monospace;
 }
+
 .global-text-input {
   margin: 1%;
   border: solid 1px black;
@@ -50,7 +51,7 @@ button {
 
 .global-text-input.err {
   background-color: rgba(221, 160, 160, 0.904);
- 
+
 }
 
 .global-button {
@@ -72,4 +73,20 @@ button {
 
 .global-button:active {
   background-color: var(--Dark-Blue);
+}
+
+.all-thoughts-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.thought-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--Ivory);
+  border: solid 1px;
+  border-radius: 1rem;
+  width: 50%;
 }

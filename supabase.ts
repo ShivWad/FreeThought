@@ -41,9 +41,9 @@ export const SetGetUserName = async (uuid: string | undefined) => {
  * @returns Local Storage data
  */
 export const getLocalStorageData = () => {
-    let data = localStorage.getItem(`sp-${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}-auth-token`);
+  let data = localStorage.getItem(`sp-${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}-auth-token`);
 
-    return JSON.parse(data ? data : "{data : null}");
+  return JSON.parse(data ? data : "{data : null}");
 }
 
 
