@@ -4,9 +4,9 @@ import { createClient, PostgrestError, PostgrestResponse } from "@supabase/supab
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
+const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_KEY
 export const supabase = createClient(supabaseUrl ? supabaseUrl : "", supabaseKey ? supabaseKey : "");
-
+export const adminSupabase = createClient(supabaseUrl ? supabaseUrl : "", supabaseServiceKey ? supabaseServiceKey : "") 
 /**
  * SignOuts the user, additionally clears localstorage
  * @returns void

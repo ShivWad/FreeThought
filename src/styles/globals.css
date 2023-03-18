@@ -89,4 +89,13 @@ button {
   border: solid 1px;
   border-radius: 1rem;
   width: 50%;
+  text-align: center;
+}
+.thought-title{
+  font-weight: bold;
+  
+}
+.thought-username {
+  align-self: flex-end;
+  font-weight: bold;
 }
