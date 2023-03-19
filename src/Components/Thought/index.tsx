@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 
 type thoughtType = {
     thought: {
@@ -12,7 +12,7 @@ type thoughtType = {
 }
 
 const Thought = ({ thought }: thoughtType) => {
- 
+
     return (
         <div className='thought-container'>
             <div className='thought-user-title'>

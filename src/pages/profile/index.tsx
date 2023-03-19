@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { SetGetUserName } from 'supabase'
+import { SetGetUserName, supabase } from 'supabase'
 import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import UserNameInput from '@/Components/UserNameInput'
@@ -98,6 +98,19 @@ export default Profile
 //     }
 
 
+
+export const getServerSideProps = async () => {
+    const data = await supabase.from('BlogData').select('*');
+
+    console.log("-------------BlogData--------------\n");
+    console.log(data)
+
+    return {
+        props: {
+            data: data,
+        },
+    }
+}
 
 // export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 //     // Create authenticated Supabase Client
