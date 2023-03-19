@@ -36,6 +36,9 @@ export const getServerSideProps = async () => {
         .from('BlogData')
         .select('*')
 
+    console.log("-------------BlogData--------------\n");
+    console.log(data)
+
     return {
         props: {
             data: data,
