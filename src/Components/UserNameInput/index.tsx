@@ -27,7 +27,6 @@ const UserNameInput = ({ uuid, propSetUserName, setShowUserNameInput }: userName
         else {
             if (propSetUserName)
                 propSetUserName(rows.data[0].user_name);
-            localStorage.setItem('userName', rows.data[0].user_name);
             setShowUserNameInput(false);
         }
     }

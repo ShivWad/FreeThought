@@ -1,29 +1,28 @@
 import Thought from '@/Components/Thought'
 import { PostgrestResponse, UserResponse } from '@supabase/supabase-js'
-import { GetServerSidePropsContext } from 'next'
 import React from 'react'
-import { adminSupabase, supabase } from 'supabase'
+import { supabase } from 'supabase'
 
 
 type thoughtType = {
     title: string,
     content: string,
     blog_id: number,
-    created_at: string
-    created_by: string
+    created_at: string,
+    created_by: string,
+    user_name: string
 }
 type thoughtsPropType = {
     data: PostgrestResponse<any>,
-    users: UserResponse[]
 }
 
-const ThoughtsList = ({ data, users }: thoughtsPropType) => {
+const ThoughtsList = ({ data }: thoughtsPropType) => {
 
     return (
         <div className='all-thoughts-container'>
-            {data?.data?.map((thought: thoughtType, index) => {
+            {data?.data?.map((thought: thoughtType) => {
                 return (
-                    <Thought thought={thought} key={thought.blog_id} user={users[index]} />
+                    <Thought thought={thought} key={thought.blog_id} />
                 )
             })}
         </div>
@@ -33,17 +32,14 @@ const ThoughtsList = ({ data, users }: thoughtsPropType) => {
 export default ThoughtsList
 
 export const getServerSideProps = async () => {
-    const data = await supabase.from('BlogData').select('*');
-    let userRes: UserResponse[] = [];
-    for (let i = 0; i < data.data!.length; i++) {
-        //@ts-ignore
-        let user = await adminSupabase.auth.admin.getUserById(data.data[i].created_by);
-        userRes.push(user);
-    }
+    const data = await supabase
+        .from('BlogData')
+        .select('*')
+        .range(0, 8);
+
     return {
         props: {
             data: data,
-            users: userRes
         },
     }
 }

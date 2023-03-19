@@ -1,22 +1,17 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { SignOut, SetGetUserName } from 'supabase';
-
+import { ExitToAppOutlined, PersonOutline, EditOutlined, PsychologyAltOutlined } from '@mui/icons-material'
 const NavBar = () => {
     const router = useRouter();
     const user = useUser();
-    const [userName, setUserName] = useState("");
-    useEffect(() => {
-        let res = SetGetUserName(user?.id);
-        res.then((r) => {
-            setUserName(r[0].user_name)
-        }).catch((r) => {
-            console.log(r.message)
-        })
-    }, [])
+
+
+    useLayoutEffect(() => {        
+        SetGetUserName(user?.id);
+    }, [user])
 
     const handleSignOut = async () => {
         await SignOut();
@@ -26,18 +21,17 @@ const NavBar = () => {
 
     return (
         <div className="navbar-container">
-            <h2>{userName}</h2>
-            <div className="navbar-content" >
 
+            <div className="navbar-content">
 
                 <Link href={"/thoughts"}>
-                    Thoughts
+                    <PsychologyAltOutlined />
                 </Link>
                 <Link href={"/write"}>
-                    Write
+                    <EditOutlined />
                 </Link>
                 <Link href={"/profile"}>
-                    Profile
+                    <PersonOutline />
                 </Link>
                 {!user && <>
                     <Link href={"/signup"} >
@@ -47,10 +41,9 @@ const NavBar = () => {
                         Sign In
                     </Link>
                 </>}
-
                 {user &&
                     <button className='global-button' style={{ color: "black", fontWeight: "bold" }} onClick={handleSignOut}>
-                        Sign out
+                        <ExitToAppOutlined />
                     </button>
                 }
             </div>

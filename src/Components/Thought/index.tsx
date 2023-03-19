@@ -7,35 +7,25 @@ type thoughtType = {
         title: string,
         content: string,
         blog_id: number,
-        created_at: string
-        created_by: string
+        created_at: string,
+        created_by: string,
+        user_name: string,
     },
-    user: UserResponse
 }
 
-const Thought = ({ thought, user }: thoughtType) => {
-    const [userName, setUserName] = useState<string | null>(null)
-
-    useEffect(() => {
-        supabase
-            .from('users_public')
-            .select("*")
-            // Filters
-            .eq("user_id", user.data.user?.id).then((r) => {
-                if (r.data)
-                    setUserName(r.data[0]?.user_name)
-            })
-    }, []);
-
+const Thought = ({ thought }: thoughtType) => {
+ 
     return (
-        <div className='thought-container'>            
-            <p className='thought-title'>
-                {thought.title}
-            </p>
-            <p className='thought-content'>
+        <div className='thought-container'>
+            <div className='thought-user-title'>
+                <span className='thought-title'>
+                    {thought.title}
+                </span>
+                <span className='thought-username'>{thought.user_name ? `@${thought.user_name}` : "Anonymous"}</span>
+            </div>
+            <span className='thought-content'>
                 {thought.content}
-            </p>
-            <p className='thought-username'>@{userName ? userName : "Anonymous"}</p>
+            </span>
         </div>
     )
 }

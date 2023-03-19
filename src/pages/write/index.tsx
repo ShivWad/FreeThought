@@ -1,14 +1,14 @@
 import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import {supabase} from 'supabase';
+import { SetGetUserName, supabase } from 'supabase';
 
 const WriteThought = () => {
     const user = useUser();
     const router = useRouter();
-
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [userName, setUserName] = useState("");
     useEffect(() => {
         if (user) {
             console.log(user)
@@ -19,18 +19,16 @@ const WriteThought = () => {
 
 
     const handleCreateThought = async () => {
+        let userPublic = await SetGetUserName(user?.id);
+        if (!userPublic)
+            return
         const { data, error } = await supabase
             .from('BlogData')
             .insert([
-                { title: title, content: content, created_by:user?.id },
+                { title: title, content: content, created_by: user?.id, user_name: userPublic[0].user_name },
             ]).select();
-
-            console.log("dataa>>>",data,error)
-        
+        console.log("dataa>>>", data, error)
     }
-
-
-
     return (
         <div>
             <input type={"text"} value={title} onChange={(e) => {
