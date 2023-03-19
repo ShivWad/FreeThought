@@ -1,7 +1,7 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SignOut, SetGetUserName } from 'supabase';
 import { ExitToAppOutlined, PersonOutline, EditOutlined, PsychologyAltOutlined } from '@mui/icons-material'
 const NavBar = () => {
@@ -9,7 +9,7 @@ const NavBar = () => {
     const user = useUser();
 
 
-    useLayoutEffect(() => {        
+    useEffect(() => {        
         SetGetUserName(user?.id);
     }, [user])
 

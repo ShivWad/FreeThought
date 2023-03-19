@@ -99,18 +99,6 @@ export default Profile
 
 
 
-export const getServerSideProps = async () => {
-    const data = await supabase.from('BlogData').select('*');
-
-    console.log("-------------BlogData--------------\n");
-    console.log(data)
-
-    return {
-        props: {
-            data: data,
-        },
-    }
-}
 
 // export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 //     // Create authenticated Supabase Client

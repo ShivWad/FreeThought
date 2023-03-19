@@ -32,12 +32,16 @@ const ThoughtsList = ({ data }: thoughtsPropType) => {
 export default ThoughtsList
 
 export const getServerSideProps = async () => {
+    console.log("-------------BlogData--------------\n");
+    let startTime = performance.now()
     const data = await supabase
         .from('BlogData')
         .select('*')
 
-    console.log("-------------BlogData--------------\n");
     console.log(data)
+
+    var endTime = performance.now()
+    console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 
     return {
         props: {
