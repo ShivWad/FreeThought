@@ -35,7 +35,6 @@ export const getServerSideProps = async () => {
     const data = await supabase
         .from('BlogData')
         .select('*')
-        .range(0, 8);
 
     return {
         props: {
