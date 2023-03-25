@@ -20,6 +20,7 @@ const Thought = ({ thought }: thoughtType) => {
                     {thought.title}
                 </span>
                 <span className='thought-username'>{thought.user_name ? `@${thought.user_name}` : "Anonymous"}</span>
+                <button className='global-button follow'>Follow</button>
             </div>
             <span className='thought-content'>
                 {thought.content}

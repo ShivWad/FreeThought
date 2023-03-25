@@ -21,7 +21,6 @@ const NavBar = () => {
     const reRoute = (path: string) => {
         router.push(path);
     }
-
     return (
         <div className="navbar-container">
 
