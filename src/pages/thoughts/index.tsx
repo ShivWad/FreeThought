@@ -20,8 +20,6 @@ type thoughtsPropType = {
 }
 
 
-const sleep = (ms: number) => new Promise(
-    resolve => setTimeout(resolve, ms));
 
 
 const ThoughtsList = ({ data }: thoughtsPropType) => {
@@ -36,7 +34,6 @@ const ThoughtsList = ({ data }: thoughtsPropType) => {
 
     const fetchThoughts = async () => {
         setLoading(true);
-        await sleep(3000);
         const data = await supabase
             .from('BlogData')
             .select('*').order('blog_id', { ascending: false }).range(fetchIndex, fetchIndex + 4);
